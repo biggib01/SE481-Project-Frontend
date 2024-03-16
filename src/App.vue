@@ -3,10 +3,42 @@
     <h1>Food Recipes</h1>
   </header>
   <nav>
-    <router-link to="/">Home</router-link>
+    <button v-if="!isAuthenticated" @click="login">Log in/Sign up</button>
+    <button v-if="isAuthenticated" @click="logout">Log out</button>
   </nav>
-  <router-view />
+  <div>
+    <pre v-if="isAuthenticated">
+        <h2>Welcome! {{ user.nickname }}</h2>
+      </pre>
+  </div>
+  <DishList v-if="isAuthenticated"></DishList>
 </template>
+
+<script>
+import { useAuth0 } from "@auth0/auth0-vue";
+import DishList from "@/views/DishList.vue";
+
+export default {
+  components: {
+    DishList,
+  },
+  setup() {
+    const { logout } = useAuth0();
+    const { loginWithRedirect, user, isAuthenticated } = useAuth0();
+
+    return {
+      login: () => {
+        loginWithRedirect();
+      },
+      user,
+      isAuthenticated,
+      logout: () => {
+        logout({ logoutParams: { returnTo: window.location.origin } });
+      },
+    };
+  },
+};
+</script>
 
 <style>
 body {
