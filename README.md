@@ -1,7 +1,8 @@
 # Term project – Undergrads - A food bookmarking and recommendation application 🍔🍕🍜
 
-# 953481-project_frontend
-
+## Preface
+  The term project for SE481 is designed to encapsulate the IR process insights explored throughout the course and to createan engaging web application.
+  
 ## Project setup
 ```
 npm install
@@ -25,12 +26,6 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-
-## Preface
-  The term project for SE481 is designed to encapsulate the IR process insights explored throughout the course and to createan engaging web application.
-  
-## Setup
-  Use the data available at https://www.kaggle.com/datasets/irkaal/foodcom-recipes-and-reviews/data
 
 ## Use cases
   - UC-001: User authentication
