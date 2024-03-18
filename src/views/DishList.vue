@@ -1,17 +1,17 @@
 <template>
   <div>
     <div>
-      <input type="text" v-model="search" @keyup.enter="executeFunction" />
-
-      <button @click="switchToFunction1">Name</button>
-      <button @click="switchToFunction2">Ingredient</button>
-      <button @click="switchToFunction3">Cooking Process</button>
+      <input type="text" v-model="search" @keyup.enter="searchAll" />
+      <div v-if="suggest">
+        Did you mean this word?:
+        <div v-on:click="useword(suggest.suggest)">{{ suggest.suggest }}</div>
+      </div>
     </div>
-    <div class="events">
+    <div class="events" v-if="events">
       <EventCard
         style="margin: 2%"
-        v-for="event in events"
-        :key="event.id"
+        v-for="event in events.results"
+        :key="event.RecipeId"
         :event="event"
       />
     </div>
@@ -25,12 +25,6 @@ import EventService from "@/services/EventService.js";
 // import axios from 'axios'
 export default {
   name: "DishList",
-  props: {
-    page: {
-      type: Number,
-      required: true,
-    },
-  },
   components: {
     EventCard, // register it as a child component
   },
@@ -39,49 +33,27 @@ export default {
     return {
       events: null,
       search: "",
-      selectedFunction: "function1",
+      suggest: null,
     };
   },
   methods: {
-    executeFunction() {
-      // Execute the selected function based on selectedFunction value
-      switch (this.selectedFunction) {
-        case "function1":
-          this.searchByName();
-          break;
-        case "function2":
-          this.searchByIngredient();
-          break;
-        case "function3":
-          this.searchByProcess();
-          break;
-        default:
-          console.error("Invalid function selected");
-      }
-    },
-    searchByName() {
-      EventService.searchByName(this.search).then((response) => {
+    searchAll() {
+      EventService.searchAll(this.search).then((response) => {
         this.events = response.data;
       });
-    },
-    searchByIngredient() {
-      EventService.searchByIngredient(this.search).then((response) => {
-        this.events = response.data;
+      EventService.suggest(this.search).then((response) => {
+        this.suggest = response.data;
       });
+      // if (this.events.total_hit < 1 || this.search != this.suggest.suggest) {
+      //   console.log(this.suggest.suggest);
+      //   console.log(this.search);
+      // } else {
+      //   this.suggest = null;
+      // }
     },
-    searchByProcess() {
-      EventService.searchByProcess(this.search).then((response) => {
-        this.events = response.data;
-      });
-    },
-    switchToFunction1() {
-      this.selectedFunction = "function1";
-    },
-    switchToFunction2() {
-      this.selectedFunction = "function2";
-    },
-    switchToFunction3() {
-      this.selectedFunction = "function3";
+    useword(query) {
+      this.search = query;
+      this.searchAll();
     },
   },
 };

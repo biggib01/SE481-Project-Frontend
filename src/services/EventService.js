@@ -10,16 +10,10 @@ const apiClient = axios.create({
 });
 
 export default {
-  searchByName(query) {
-    return apiClient.get("/name?query=" + query);
+  suggest(query) {
+    return apiClient.get("/suggest?query=" + query);
   },
-  searchByIngredient(query) {
-    return apiClient.get("/ingredient?query=" + query);
-  },
-  searchByProcess(query) {
-    return apiClient.get("/process?query=" + query);
-  },
-  findById(id) {
-    return apiClient.get("/find?id=" + id);
+  searchAll(query) {
+    return apiClient.get("/search?query=" + query);
   },
 };

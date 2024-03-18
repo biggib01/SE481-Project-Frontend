@@ -28,7 +28,7 @@
           <li>►{{ list }}</li>
         </ol>
       </dishModal>
-      <div class="event-card">
+      <div class="event-card" v-on:click="isOpen = true">
         <img
           :src="event.Images[0]"
           :alt="event.Name"
@@ -36,7 +36,6 @@
           height="100"
         />
         <h3>{{ event.Name }}</h3>
-        <button @click="isOpen = true">Show Modal</button>
       </div>
     </div>
   </div>
@@ -82,7 +81,7 @@ export default {
 
 .event-card {
   padding: 20px;
-  width: 250px;
+  width: 300px;
   cursor: pointer;
   border: 1px solid #39495c;
 }
